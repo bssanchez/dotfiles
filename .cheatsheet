@@ -1,0 +1,14 @@
+VIM
+--
+gt  ▸ Next tab
+gT  ▸ Previous tab
+CTRL + ww  ▸ Switch NERDTree
+
+____________________________
+
+SCREEN SHORTCUTS
+--
+CTRL + a |  ▸ Split verticalzz
+CTRL + a S  ▸ Split horizontal
+CTRL + a TAB  ▸ Switch areas
+CTRL + a c  ▸ Start bash/zsh

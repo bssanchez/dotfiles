@@ -1,0 +1,35 @@
+## Keyboard language
+setxkbmap latam &
+
+## Hack for fix java graphical app
+export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -XX:+IgnoreUnrecognizedVMOptions' &
+
+## Init screensaver
+/usr/bin/xscreensaver -no-splash &
+
+## Load Xresources configs
+xrdb ~/.Xresources &
+
+## Load dbus language keyboard switcher
+# ibus-daemon -x -d &
+xbindkeys &
+
+## Disable beep
+xset -b &
+
+## Enable keyring
+eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh) &
+export SSH_AUTH_SOCK &
+
+## Load window composite manager
+xcompmgr &
+
+## Load tray system apps
+nm-applet &
+pasystray &
+caffeine &
+
+## Init apps and daemons
+# urxvtd &
+mpd -v &
+exec awesome

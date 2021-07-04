@@ -1,0 +1,163 @@
+## Init configs
+background_opacity: 0.98
+debug.render_timer: false
+
+env:
+  TERM: xterm-256color
+
+window:
+  dimensions:
+    columns: 92
+    lines: 20
+  padding:
+    x: 15
+    y: 15
+  decorations: None
+
+dpi:
+  x: 128.0
+  y: 128.0
+
+draw_bold_text_with_bright_colors: true
+
+## Theme
+font:
+  normal:
+    family: "Fira Code Nerd Font"
+
+  bold:
+    family: "Fira Code Nerd Font"
+
+  italic:
+    family: "Fira Code Nerd Font"
+
+  size: 8.5
+
+  offset:
+    x: 0
+    y: 0
+
+  glyph_offset:
+    x: 0
+    y: 0
+
+  use_thin_strokes: false
+
+colors:
+  primary:
+    background: '#000000'
+    foreground: '#93a1a1'
+
+  cursor:
+    text: '#555555'
+    cursor: '#afbfbf'
+
+  normal:
+    black: '#263640'
+    red: '#D41919'
+    green: '#819400'
+    yellow: '#b08500'
+    blue: '#2587cc'
+    magenta: '#696ebf'
+    cyan: '#289c93'
+    white: '#bfbaac'
+
+  bright:
+    black: '#4a697d'
+    red: '#fa3935'
+    green: '#a4bd00'
+    yellow: '#d9a400'
+    blue: '#2ca2f5'
+    magenta: '#8086e8'
+    cyan: '#33c5ba'
+    white: '#fdf6e3'
+
+
+# Key bindings
+#
+# Each binding is defined as an object with some properties. Most of the
+# properties are optional. All of the alphabetical keys should have a letter for
+# the `key` value such as `V`. Function keys are probably what you would expect
+# as well (F1, F2, ..). The number keys above the main keyboard are encoded as
+# `Key1`, `Key2`, etc. Keys on the number pad are encoded `Number1`, `Number2`,
+# etc.  These all match the glutin::VirtualKeyCode variants.
+#
+# Possible values for `mods`
+# `Command`, `Super` refer to the super/command/windows key
+# `Control` for the control key
+# `Shift` for the Shift key
+# `Alt` and `Option` refer to alt/option
+#
+# mods may be combined with a `|`. For example, requiring control and shift
+# looks like:
+#
+# mods: Control|Shift
+#
+# The parser is currently quite sensitive to whitespace and capitalization -
+# capitalization must match exactly, and piped items must not have whitespace
+# around them.
+#
+# Either an `action`, `chars`, or `command` field must be present.
+#   `action` must be one of `Paste`, `PasteSelection`, `Copy`, or `Quit`.
+#   `chars` writes the specified string every time that binding is activated.
+#     These should generally be escape sequences, but they can be configured to
+#     send arbitrary strings of bytes.
+#   `command` must be a map containing a `program` string, and `args` array of
+#     strings. For example:
+#     - { ... , command: { program: "alacritty", args: ["-e", "vttest"] } }
+key_bindings:
+  - { key: V,        mods: Control|Alt, action: Paste                       }
+  - { key: C,        mods: Control|Alt, action: Copy                        }
+  - { key: PageUp,   mods: Shift, action: ScrollPageUp}
+  - { key: PageDown, mods: Shift, action: ScrollPageDown                    }
+  - { key: Home,     mods: Shift, action: ScrollToTop                       }
+  - { key: End,      mods: Shift, action: ScrollToBottom                    }
+
+# Mouse bindings
+#
+# Currently doesn't support modifiers. Both the `mouse` and `action` fields must
+# be specified.
+#
+# Values for `mouse`:
+# - Middle
+# - Left
+# - Right
+# - Numeric identifier such as `5`
+#
+# Values for `action`:
+# - Paste
+# - PasteSelection
+# - Copy (TODO)
+mouse_bindings:
+  - { mouse: Middle, action: PasteSelection }
+
+mouse:
+  double_click: { threshold: 300 }
+  triple_click: { threshold: 300 }
+
+selection:
+  semantic_escape_chars: ",│`|:\"' ()[]{}<>"
+
+scrolling:
+  # How many lines of scrollback to keep,
+  # '0' will disable scrolling.
+  history: 10000
+
+  # Number of lines the viewport will move for every line
+  # scrolled when scrollback is enabled (history > 0).
+  multiplier: 3
+
+  # Faux Scrolling
+  #
+  # The `faux_multiplier` setting controls the number
+  # of lines the terminal should scroll when the alternate
+  # screen buffer is active. This is used to allow mouse
+  # scrolling for applications like `man`.
+  #
+  # To disable this completely, set `faux_multiplier` to 0.
+  faux_multiplier: 3
+
+  # Automatically scroll to the bottom when new text is written
+  # to the terminal.
+  auto_scroll: false
+

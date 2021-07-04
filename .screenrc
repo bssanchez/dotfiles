@@ -1,0 +1,23 @@
+# Statusbar
+hardstatus off
+hardstatus alwayslastline
+
+hardstatus string "%{+b wk} %-w%{+b wB} %n %t %{-}%+w %41=%H %D, %c:%s "
+
+# Escape key
+escape \\q
+
+# To clear screen after closing some programs
+altscreen on
+
+# Default windows
+screen -t "zsh" 1
+
+# Key bindings
+bindkey -k k; quit
+
+# COLORS! and some usefull terminfo
+term xterm-256color
+
+# Do not show startup message
+startup_message off
