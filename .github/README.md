@@ -4,7 +4,7 @@ Config files for my machine's setup ([Reference](https://antelo.medium.com/how-t
 
 ### Screenshot
 
-![Screenshot](./Imágenes/screenshots/dotfiles.png '¡SCREENSHOT!')
+![Screenshot](../Imágenes/screenshots/dotfiles.png '¡SCREENSHOT!')
 
 ### Applications
 
@@ -23,10 +23,10 @@ Config files for my machine's setup ([Reference](https://antelo.medium.com/how-t
 
 ### User configs
 
-**GTK Theme:** Flat remix (red darker solid)
-**Icon Theme:** Flat remix (red light)
-**Cursor:** Adwaita
-**Font:** Fira Code NerdFont
+* **GTK Theme:** Flat remix (red darker solid)
+* **Icon Theme:** Flat remix (red light)
+* **Cursor:** Adwaita
+* **Font:** Fira Code NerdFont
 
 ### License
 
