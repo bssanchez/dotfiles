@@ -12,9 +12,9 @@ Config files for my machine's setup ([Reference](https://antelo.medium.com/how-t
 2. **Music player**: mpd + ncmpcpp
 3. **Shell**: ZSH with Oh-my-zsh
 4. **Window manager**: Awesome WM
-    4.1. [Widgets](https://github.com/streetturtle/awesome-wm-widgets)
-    4.2. [Freedesktop menu](https://github.com/lcpz/awesome-freedesktop)
-    4.3. [Lain](https://github.com/lcpz/lain)
+    1. [Widgets](https://github.com/streetturtle/awesome-wm-widgets)
+    2. [Freedesktop menu](https://github.com/lcpz/awesome-freedesktop)
+    3. [Lain](https://github.com/lcpz/lain)
 5. **Editor**: Vim / Neovim
 6. **Multiplexor**: Tmux / Screen
 7. **Launcher**: Rofi (theme from [adi1090x rofi](https://github.com/adi1090x/rofi))
