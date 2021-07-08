@@ -14,8 +14,9 @@ xrdb ~/.Xresources &
 # ibus-daemon -x -d &
 xbindkeys &
 
-## Disable beep
+## Disable beep and black screen for inativity
 xset -b &
+xset s off &
 
 ## Enable keyring
 eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh) &

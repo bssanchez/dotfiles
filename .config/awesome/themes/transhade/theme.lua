@@ -16,9 +16,9 @@ theme.dir                 = os.getenv("HOME") .. "/.config/awesome/themes/transh
 theme.icons               = theme.dir .. "/icons"
 theme.wallpaper           = os.getenv("HOME") .. "/Imágenes/fondos"
 theme.panel               = "png:" .. theme.icons .. "/panel/panel.png"
-theme.font                = "JetBrains Mono Bold 9"
-theme.calendar_font       = "JetBrains Mono 10"
-theme.fs_font             = "JetBrains Mono 10"
+theme.font                = "Fira Code Nerd Font Medium 9"
+theme.calendar_font       = "Fira Code Nerd Font 10"
+theme.fs_font             = "Fira Code Nerd Font 10"
 
 theme.awesome_icon_launcher = theme.icons .. "/awesome_icon.png"
 
@@ -27,10 +27,10 @@ theme.fg_focus            = "#D41919"
 theme.fg_urgent           = "#CC9393"
 theme.bat_fg_critical     = "#232323"
 
-theme.bg_normal            = "#00000055"
-theme.bg_focus             = "#000000FF"
+theme.bg_normal            = "#323232"
+theme.bg_focus             = "#202020"
 theme.bg_urgent            = "#D4191955"
-theme.bg_systray           = "#000000"
+theme.bg_systray           = "#323232"
 theme.systray_icon_spacing = 10
 theme.bat_bg_critical      = "#D4191955"
 
@@ -51,7 +51,7 @@ theme.menu_icon_size    = 32
 
 -- Notifications
 theme.notification_font         = "JetBrains Mono 10"
-theme.notification_bg           = "#000000"
+theme.notification_bg           = "#323232"
 theme.notification_fg           = "#ffffff"
 theme.notification_border_width = 0
 theme.notification_border_color = "#ffffff"
@@ -77,11 +77,11 @@ theme.taglist_bg_empty    = "png:" .. theme.icons .. "/panel/taglist/" .. chosen
 theme.taglist_bg_occupied = "png:" .. theme.icons .. "/panel/taglist/" .. chosen_taglist_type .. "/occupied.png"
 theme.taglist_bg_urgent   = "png:" .. theme.icons .. "/panel/taglist/" .. chosen_taglist_type .. "/urgent.png"
 theme.taglist_bg_focus    = "png:" .. theme.icons .. "/panel/taglist/" .. chosen_taglist_type .. "/focus.png"
-theme.taglist_font        = "Font Awesome 10"
+theme.taglist_font        = "Font Awesome 9"
 
 -- Tasklist
 
-theme.tasklist_font                 = "JetBrains Mono Bold 9"
+theme.tasklist_font                 = "Fira Code Nerd Font Medium 9"
 theme.tasklist_disable_icon         = true
 --theme.tasklist_disable_text			- false
 -- theme.tasklist_bg_normal            = "png:" .. theme.icons .. "/panel/tasklist/normal.png"
@@ -160,7 +160,7 @@ theme.menu_submenu_icon = theme.icons .. "/submenu.png"
 theme.chrome         = theme.dir .. "/icons/apps/chrome.png"
 
 -- Hotkeys
-theme.hotkeys_bg                = '#000000DD'
+theme.hotkeys_bg                = '#323232'
 theme.hotkeys_fg	            = '#FFFFFF'
 theme.hotkeys_border_width      = 1
 theme.hotkeys_border_color      = '#FFFFFF'
@@ -168,8 +168,8 @@ theme.hotkeys_shape             = gears.shape.rectangle
 theme.hotkeys_modifiers_fg	    = '#D41919'
 theme.hotkeys_label_bg	        = '#FFFFFF'
 theme.hotkeys_label_fg	        = '#000000'
-theme.hotkeys_font              = 'JetBrains Mono Bold 9'
-theme.hotkeys_description_font  = 'JetBrains Mono Bold 9'
+theme.hotkeys_font              = 'Fira Code Nerd Font Bold 9'
+theme.hotkeys_description_font  = 'Fira Code Nerd Font Bold 9'
 theme.hotkeys_group_margin      = 10
 
 -- Titlebar

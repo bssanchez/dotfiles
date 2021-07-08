@@ -170,22 +170,22 @@ lain.widget.cal({
     attach_to   = { mytextclock },
     notification_preset = {
         fg        = "#FFFFFF",
-        bg        = "#000000AA",
+        bg        = "#323232",
         position  = "top_right",
-        font      = "JetBrains Mono Bold 9",
+        font      = "Fira Code Nerd Font Medium 9",
         padding   = 30
     }
 })
 
 -- ALSA volume bar
 volume = lain.widget.alsabar({
-    notifications = { font = "JetBrains Mono", font_size = 10 },
+    notifications = { font = "Fira Code Nerd Font", font_size = 10 },
     --togglechannel = "IEC958,3",
     width = 75, height = 10, border_width = 0,
     colors = {
         background = beautiful.tasklist_bg_normal,
-        unmute     = "#ffffff",
-        mute       = "#B5B5B5"
+        unmute     = "#696ebf",
+        mute       = "#8086e8"
     },
 })
 
@@ -313,9 +313,9 @@ awful.screen.connect_for_each_screen(function(s)
         filter  = awful.widget.tasklist.filter.currenttags, 
         buttons = tasklist_buttons,
         style = {
-            shape_border_width = 1,
-            shape_border_color = beautiful.tasklist_fg_normal,
-            shape  = gears.shape.rectangle,
+            -- shape_border_width = 1,
+            -- shape_border_color = beautiful.tasklist_fg_normal,
+            -- shape  = gears.shape.rectangle,
             align = "center",
         }
     }
@@ -347,15 +347,15 @@ awful.screen.connect_for_each_screen(function(s)
         position = "top",
         screen = s, 
         -- shape = custom_shape, 
-        width = 1358,
-        -- height = 22,
-        bg = "#000000AA",
-        y = 4,
+        width = 1366,
+        height = 22,
+        bg = "#323232",
+        y = 0,
         border_color = "00000000",
     })
 
-    s.mywibox.x = 4
-	s.mywibox.y = 4
+    s.mywibox.x = 0
+	s.mywibox.y = 0
 
     local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
 	local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
@@ -377,10 +377,10 @@ awful.screen.connect_for_each_screen(function(s)
     }
 
     s.padding = {
-        top = 8, 
-        left = 4, 
-        right = 4, 
-        bottom = 8, 
+        top = 2, 
+        left = 2, 
+        right = 2, 
+        bottom = 2, 
     }
 
     -- Add widgets to the wibox
@@ -430,7 +430,7 @@ awful.screen.connect_for_each_screen(function(s)
             brightness_widget{
                 type = 'icon_and_text',
                 program = 'xbacklight',
-                font = 'JetBrains Mono Bold 9',
+                font = 'Fira Code Nerd Font Medium 9',
                 step = 2,        
             },
     
@@ -442,7 +442,7 @@ awful.screen.connect_for_each_screen(function(s)
     
             volume_widget{
                 type = 'icon_and_text',
-                font = 'JetBrains Mono Bold 9'
+                font = 'Fira Code Nerd Font Medium 9'
             },
 
             wibox.widget {
@@ -458,14 +458,14 @@ awful.screen.connect_for_each_screen(function(s)
         position = "bottom", 
         screen = s, 
         -- shape = custom_shape, 
-        width = 1358,
+        width = 1366,
         height = 22,
-        bg = "#000000AA",
+        bg = "#323232",
         border_color = "00000000"
     })
 
-    s.mywiboxbottom.x = 4
-    s.mywiboxbottom.y = 768 - s.mywiboxbottom.height - 4
+    s.mywiboxbottom.x = 0
+    s.mywiboxbottom.y = 768 - s.mywiboxbottom.height
 
     local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
     local netspeed_widget = require("awesome-wm-widgets.net-speed-widget.net-speed")
@@ -495,7 +495,7 @@ awful.screen.connect_for_each_screen(function(s)
 
             battery_widget{
                 type = 'icon_and_text',
-                font = 'JetBrains Mono Bold 9',
+                font = 'Fira Code Nerd Font Medium 8',
                 path_to_icons = '/usr/share/icons/Flat-Remix-Red-Dark/status/symbolic/',
                 show_current_level = true,
                 display_notification = true,
