@@ -1,0 +1,21 @@
+#!/bin/bash
+
+API_URL="https://api.openweathermap.org/data/2.5/weather?q=Soacha,co&appid=cdaf9eb62339c8eb57752ba1f5c24a2b&lang=es&units=metric"
+
+response=$(curl -s "$API_URL")
+
+if [ $? -eq 0 ]; then
+  icon=$(echo "$response" | jq -r '.weather[0].icon')
+  feel=$(echo "$response" | jq -r '.main.feels_like')
+  temp=$(echo "$response" | jq -r '.main.temp')
+  city=$(echo "$response" | jq -r '.name')
+  country=$(echo "$response" | jq -r '.sys.country')
+  humidity=$(echo "$response" | jq -r '.main.humidity')
+  wind=$(echo "$response" | jq -r '.wind.speed')
+  #weather=$(echo "$response" | jq -r '.weather[0].main')
+  weather=$(echo "$response" | jq -r '.weather[0].description')
+
+  echo "$icon $feel $temp $city $country $humidity $wind $weather"
+else
+  echo "... N/A  Soacha CO N/A N/A Loading..."
+fi

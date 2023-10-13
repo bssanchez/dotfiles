@@ -43,6 +43,7 @@
 ! URxvt*background: rgba:0030/0030/0030/E000
 URxvt*depth: 32
 URxvt.depth: 32
+URxvt.background: [95]#000000
 
 URxvt.scrollBar: true
 Urxvt.secondaryScroll: true
@@ -52,11 +53,11 @@ URxvt.scrollstyle: plain
 URxvt.scrollColor: #D41919 
 URxvt.cursorColor: #c78f00
 URxvt.matcher.button: 1
-URxvt.saveLines: 4095
-URxvt.termName: rxvt-256color
+URxvt.saveLines: 10095
+URxvt.termName: xterm-256color
 URxvt.title: Terminal del demonio
 URxvt.iconFile: /home/desarrollo/.local/share/icons/Terminal.png
- 
+
 URxvt.cursorBlink: true
 URxvt*font: xft:FiraCode\ Nerd\ Font:bold:pixelsize=13:size=13:antialias=true:minspace=False,xft:DejaVuSansMono\ Nerd\ Font\ Mono:size=10
 URxvt.letterSpace:-1
@@ -78,3 +79,7 @@ URxvt.keysym.Control-Up: \033[1;5A
 URxvt.keysym.Control-Down: \033[1;5B
 URxvt.keysym.Control-Right: \033[1;5C
 URxvt.keysym.Control-Left: \033[1;5D
+URxvt.keysym.Home: \033[1~
+URxvt.keysym.End: \033[4~
+URxvt.keysym.KP_Home: \033[1~
+URxvt.keysym.KP_End:  \033[4~

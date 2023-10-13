@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [[ $EUID != 0 ]] ; then
+  echo This must be run as root!
+  exit 1
+fi
+
+cd /sys/bus/pci/drivers/xhci_hcd/
+# /sys/bus/pci/drivers/ehci_hcd
+# /sys/bus/pci/drivers/uhci_hcd/
+
+for file in ????:??:??.? ; do
+ echo -n "$file" > unbind
+ echo -n "$file" > bind
+done

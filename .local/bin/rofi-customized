@@ -1,1 +1,3 @@
-/home/desarrollo/.config/rofi/launchers/text/launcher.sh
+#!/usr/bin/env bash
+
+rofi -modi window,drun,ssh,combi -show combi

@@ -3,6 +3,10 @@ VIM
 gt  ▸ Next tab
 gT  ▸ Previous tab
 CTRL + ww  ▸ Switch NERDTree
+CTRL + d  ▸ scroll down
+CTRL + u  ▸ scroll up
+gd  ▸  go to definition
+CTRL + o  ▸ go throught files
 
 ____________________________
 
@@ -12,3 +16,13 @@ CTRL + a |  ▸ Split verticalzz
 CTRL + a S  ▸ Split horizontal
 CTRL + a TAB  ▸ Switch areas
 CTRL + a c  ▸ Start bash/zsh
+
+----------------------------
+TMUX SHORTCUTS
+--
+CTRL + b %  ▸ Split horizontal
+CTRL + b "  ▸ Split vertical
+CTRL + b p  ▸ Previews tab/session
+CTRL + b n  ▸ Next tab/session
+CTRL + b c  ▸ Start new term/session
+CTRL + b &  ▸ Kill actual tab/session
