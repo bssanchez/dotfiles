@@ -1,10 +1,10 @@
 --[[
-
     Transhade Awesome WM config 1.0 
     by @_kid_goth
-
 --]]
 
+-- If LuaRocks is installed, make sure that packages installed through it are
+pcall(require, "luarocks.loader")
 
 -- {{{ Required libraries
 local gears         =   require("gears")
@@ -17,9 +17,7 @@ local menubar       =   require("menubar")
 local hotkeys_popup =   require("awful.hotkeys_popup").widget
                         require("awful.hotkeys_popup.keys")
 local lain          =   require("lain")
-
--- local shape         =   require("gears.shape")
-local freedesktop   =   require("freedesktop")
+local dpi           =   beautiful.xresources.apply_dpi
 -- }}}
 
 
@@ -27,9 +25,11 @@ local freedesktop   =   require("freedesktop")
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
 if awesome.startup_errors then
-    naughty.notify({ preset = naughty.config.presets.critical,
-                    title = "Oops, hubo un error durante el inicio!",
-                    text = awesome.startup_errors })
+    naughty.notify({
+        preset = naughty.config.presets.critical,
+        title = "Oops, hubo un error durante el inicio!",
+        text = awesome.startup_errors
+    })
 end
 
 -- Handle runtime errors after startup
@@ -40,59 +40,46 @@ do
         if in_error then return end
         in_error = true
 
-        naughty.notify({ preset = naughty.config.presets.critical,
-                        title = "Oops, ocurrió un error!",
-                        text = err })
+        naughty.notify({
+            preset = naughty.config.presets.critical,
+            title = "Oops, ocurrió un error!",
+            text = err
+        })
         in_error = false
     end)
 end
 -- }}}
 
--- {{{ Autostart applications
-function run_once(cmd)
-    findme = cmd
-    firstspace = cmd:find(" ")
-    if firstspace then
-        findme = cmd:sub(0, firstspace-1)
-    end
-    awful.util.spawn_with_shell("pgrep -u $USER -x " .. findme .. " > /dev/null || (" .. cmd .. ")")
-end
-
--- run_once("urxvtd")
--- }}}
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
+-- define home path
+local homedir = os.getenv("HOME") .. "/.config/awesome/"
 
--- Home path
-homedir = os.getenv("HOME") .. "/.config/awesome/"
-
--- Iniciar tema
-confdir = homedir .. "themes/transhade/"
+-- init theme
+local confdir = homedir .. "themes/transhade/"
 beautiful.init(confdir .. "theme.lua")
 
 -- teclas de mod y terminal
-modkey      = "Mod4"
-altkey      = "Mod1"
--- terminal    = "urxvtc"
-terminal    = "alacritty"
-editor      = os.getenv("EDITOR") or "vim"
-editor_cmd  = terminal .. " -e " .. editor
-musicplr    = terminal .. " -e ncmpcpp "
+local modkey      = "Mod4"
+local altkey      = "Mod1"
 
 -- aplicaciones predeterminadas
+local browser     = "brave-nightly"
+local gui_editor  = "gvim"
+local file_manager= "pcmanfm"
+local terminal    = "alacritty"
+local editor      = os.getenv("EDITOR") or "vim"
+local editor_cmd  = terminal .. " -e " .. editor
+-- }}}
 
-browser     = "brave"
-browser2    = "firefox-developer-edition"
-gui_editor  = "gvim"
-graphics    = "fireworks"
 
--- lain
+-- {{{ Layouts config
+--
 lain.layout.termfair.nmaster   = 3
 lain.layout.termfair.ncol      = 1
 lain.layout.centerwork.nmaster = 3
 lain.layout.centerwork.ncol    = 1
--- }}}
 
 awful.layout.layouts = {
     awful.layout.suit.floating,
@@ -104,8 +91,11 @@ awful.layout.layouts = {
     awful.layout.suit.fair.horizontal,
     awful.layout.suit.spiral
 }
+-- }}}
+
 
 -- {{{ Helper functions
+--
 local function client_menu_toggle_fn()
     local instance = nil
 
@@ -120,78 +110,137 @@ local function client_menu_toggle_fn()
 end
 -- }}}
 
+
 -- {{{ Menu
-myawesomemenu = {
-    { "hotkeys", function() return false, hotkeys_popup.show_help end },
-    { "manual", terminal .. " -e man awesome" },
-    { "edit config", string.format("%s -e %s %s", terminal, editor, awesome.conffile) },
-    { "restart", awesome.restart },
-    { "quit", function() awesome.quit() end }
+--
+local myawesomemenu = {
+    {
+		"Hotkeys",
+		function()
+			hotkeys_popup.show_help(nil, awful.screen.focused())
+		end,
+	},
+	{ "Manual",          terminal .. " -e man awesome" },
+	{ "Edit config",     editor_cmd .. " " .. awesome.conffile },
+	{ "Terminal",        terminal },
+	{ "Restart",         awesome.restart },
+	{
+		"Quit",
+		function()
+			awesome.quit()
+		end,
+	},
 }
 
---[[ 
-mymainmenu = awful.menu({ items = { 
-    { "awesome", myawesomemenu },
-    -- { "restart", "reboot" },
-    -- { "shutdown", "shutdown -h now" },
-    { "open terminal", terminal },
-    { "shutdown", "clearine" }
-}
-})
---]]
-
---[[ ]]
-mymainmenu = freedesktop.menu.build({
-    before = {
-        { "Awesome", myawesomemenu, beautiful.awesome_icon },
-        -- other triads can be put here
+local mymainmenu = awful.menu({ 
+    items = { 
+        { "Awesome", myawesomemenu, beautiful.awesome_icon_launcher },
+        { "File manager", file_manager },
+        { "Open Terminal", terminal },
+        { "Shutdown/Logout", "clearine" },
     },
-    after = {
-        -- { "restart", "reboot" },
-        -- { "shutdown", "shutdown -h now" },
-        { "open terminal", terminal },
-        { "shutdown", "clearine" }
-        -- other triads can be put here
-    }
+    theme = {
+		width = 180,
+		height = 25,
+		font = "Fira Code Nerd Font 10",
+		fg_normal = beautiful.fg_normal,
+		fg_focus = beautiful.fg_focus,
+		bg_normal = beautiful.bg_normal,
+		bg_focus = beautiful.bg_focus,
+		border_width = 3,
+		border_color = beautiful.border_normal,
+	},
 })
---]]
+
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon_launcher, menu = mymainmenu })
+menubar.utils.terminal = terminal
+-- }}}
+
+
+-- {{{ Notifications
+--
+require("custom-widgets.notifications")
+-- }}}
+
+
+-- {{{ Wibar & Wibox (Widgets)
+--
+--Spacer
+local separator = wibox.widget.textbox(" ")
+
+-- Brightness Osd functionality
+local brightness_osd   = require("custom-widgets.osds.brightness_osd")
+local brightness_timer = gears.timer {
+	timeout = 2,
+	autostart = true,
+	callback = function()
+		brightness_osd.visible = false
+	end
+}
+
+brightness_osd:connect_signal("mouse::enter", function()
+	brightness_timer:stop()    -- Stop the timer when the mouse enters the dock
+	brightness_osd.visible = true -- Show the dock immediately
+end)
+
+-- Attach the timer to a signal that triggers when the mouse leaves the dock
+brightness_osd:connect_signal("mouse::leave", function()
+	brightness_timer:again() -- Restart the timer when the mouse leaves the dock
+end)
+
+-- Volume Osd functionality
+local volume_osd   = require("custom-widgets.osds.volume_osd")
+local volume_timer = gears.timer {
+	timeout = 2,
+	autostart = true,
+	callback = function()
+		volume_osd.visible = false
+	end
+}
+
+volume_osd:connect_signal("mouse::enter", function()
+	volume_timer:stop()    -- Stop the timer when the mouse enters the dock
+	volume_osd.visible = true -- Show the dock immediately
+end)
+
+-- Attach the timer to a signal that triggers when the mouse leaves the dock
+volume_osd:connect_signal("mouse::leave", function()
+	volume_timer:again() -- Restart the timer when the mouse leaves the dock
+end)
 
 -- Keyboard map indicator and switcher
 mykeyboardlayout = awful.widget.keyboardlayout()
 
--- {{{ Wibar & Wibox
-
 -- Clock
-mytextclock = wibox.widget.textclock()
-local month_calendar = awful.widget.calendar_popup.month()
+local calendar_widget = require("custom-widgets.calendar")
+local mytextclock = wibox.widget.textclock('<span color="' .. beautiful.fg_normal .. '" font="Fira Code Nerd Font Medium 9"> %a %b %d, %I:%M %p </span>', 10)
 
-lain.widget.cal({
-    attach_to   = { mytextclock },
-    notification_preset = {
-        fg        = "#FFFFFF",
-        bg        = "#323232",
-        position  = "top_right",
-        font      = "Fira Code Nerd Font Medium 9",
-        padding   = 30
-    }
+-- calendar-widget
+local cw = calendar_widget({
+	theme = "orangeblood",
+	placement = "top_center",
+	start_sunday = true,
+	radius = 8,
+	previous_month_button = 1,
+	padding = 5,
+	next_month_button = 3,
 })
+mytextclock:connect_signal("button::press", function(_, _, _, button)
+	if button == 1 then
+		cw.toggle()
+	end
+end)
 
--- ALSA volume bar
-volume = lain.widget.alsabar({
-    notifications = { font = "Fira Code Nerd Font", font_size = 10 },
-    --togglechannel = "IEC958,3",
-    width = 75, height = 10, border_width = 0,
-    colors = {
-        background = beautiful.tasklist_bg_normal,
-        unmute     = "#696ebf",
-        mute       = "#8086e8"
-    },
-})
+-- Awesome logo
+local awesome_logo = require("custom-widgets.awesome_logo")
+
+-- Battery widget
+local batteryarc_widget = require("custom-widgets.batteryarc")
+
 
 -- {{{ Random Wallpapers
 -- Get the list of files from a directory. Must be all images or folders and non-empty. 
-function scanDir(directory)
+local function scanDir(directory)
     local i, fileList, popen = 0, {}, io.popen
     for filename in popen([[find "]] ..directory.. [[" -type f]]):lines() do
         i = i + 1
@@ -200,12 +249,12 @@ function scanDir(directory)
     return fileList
 end
 
-wallpaperList = scanDir(beautiful.wallpaper)
-changeTime = 300
+local wallpaperList = scanDir(beautiful.wallpaper)
+local changeTime = 300
 
 -- Apply a random wallpaper on startup.
 math.randomseed(os.time())
-numRandWall = math.random(1, #wallpaperList)
+local numRandWall = math.random(1, #wallpaperList)
 
 if beautiful.wallpaper then
     for s = 1, screen.count() do
@@ -214,7 +263,7 @@ if beautiful.wallpaper then
 end
 
 -- Apply a random wallpaper every changeTime seconds.
-wallpaperTimer = timer { timeout = changeTime }
+local wallpaperTimer = timer { timeout = changeTime }
 wallpaperTimer:connect_signal("timeout", function()
     numRandWall = math.random(1, #wallpaperList)
 
@@ -276,7 +325,7 @@ local tasklist_buttons  = gears.table.join(
 awful.screen.connect_for_each_screen(function(s)
     awful.tag(
         -- { " files ", " code ", " web ", " shell ", " media " },
-        { "  ", "  ", "  ", "  ", "  " },
+        { "  ", "  ", "  ", "  ", "  " },
         s, {
         awful.layout.layouts[1],
         awful.layout.layouts[1],
@@ -319,37 +368,15 @@ awful.screen.connect_for_each_screen(function(s)
             align = "center",
         }
     }
-
-    -- Create a systray widget
-	s.systray = wibox.widget {
-        {
-            wibox.widget.systray(),
-            left   = 10,
-            top    = 5,
-            bottom = 5,
-            right  = 10,
-            widget = wibox.container.margin,
-        },
-        bg         = beautiful.bg_systray,
-        -- shape      = gears.shape.rounded_rect,
-        shape_clip = true,
-        widget     = wibox.container.background,
-    }
-	s.systray.visible = true
-
-    -- Create the wibox
-    function custom_shape(cr, width, height)
-        gears.shape.rounded_rect(cr, width, height, 5)
-    end
     
     -- Create the top wiboxs
     s.mywibox = awful.wibar({
         position = "top",
-        screen = s, 
-        -- shape = custom_shape, 
-        width = 1366,
-        height = 22,
-        bg = "#323232",
+        screen = s,
+        margins = { top = dpi(0), left = dpi(0), right = dpi(0), bottom = dpi(0) },
+        width = 1920,
+        height = 26,
+        bg =  beautiful.bg_normal,
         y = 0,
         border_color = "00000000",
     })
@@ -357,21 +384,18 @@ awful.screen.connect_for_each_screen(function(s)
     s.mywibox.x = 0
 	s.mywibox.y = 0
 
-    local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
-	local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
-    local mpdarc_widget = require("awesome-wm-widgets.mpdarc-widget.mpdarc")
-
-    local mpd_widget = wibox.widget {
+    local top_right = require("custom-widgets.top_right")
+    local taglist_widget = wibox.widget {
         {
-            mpdarc_widget,
+            s.mytaglist,
             left   = 10,
             top    = 5,
             bottom = 5,
             right  = 10,
             widget = wibox.container.margin,
         },
-        bg         = beautiful.bg_systray,
-        -- shape      = gears.shape.rounded_rect,
+        bg         = beautiful.bg_taglist,
+        shape      = gears.shape.rounded_rect,
         shape_clip = true,
         widget     = wibox.container.background,
     }
@@ -385,92 +409,74 @@ awful.screen.connect_for_each_screen(function(s)
 
     -- Add widgets to the wibox
     s.mywibox:setup {
-        layout = wibox.layout.align.horizontal,
-        { -- Left widgets
-            layout = wibox.layout.fixed.horizontal,
-            wibox.widget {
-				widget = wibox.widget.separator,
-				forced_width = 4,
-				opacity = 0
-			},
-            mylauncher,
-            s.mytaglist,
-            wibox.widget {
-				widget = wibox.widget.separator,
-				forced_width = 4,
-				opacity = 0
-			},
-            s.mylayoutbox,
-            wibox.widget {
-				widget = wibox.widget.separator,
-				forced_width = 4,
-				opacity = 0
-			},
-            s.mypromptbox,
+        {
+            layout = wibox.layout.stack,
+            expand = "none",
+            {
+                layout = wibox.layout.align.horizontal,
+                { -- Left widgets
+                    layout = wibox.layout.fixed.horizontal,
+                    separator,
+                    awesome_logo,
+                    separator,
+                    taglist_widget,
+                    separator,
+                    s.mylayoutbox,
+                    separator,
+                    s.mypromptbox,
+                },
+                nil, -- Middle widget
+                { -- Right widgets
+                    layout = wibox.layout.fixed.horizontal,
+                    separator,
+                    
+                    top_right,
+                    separator,
+                    batteryarc_widget({
+                        show_current_level = true,
+                        arc_thickness = 3,
+                        size = 10,
+                        font = "Fira Code Nerd Font 6",
+                        timeout = 10,
+                    }),
+                    separator,
+                }
+            },
+            {
+                mytextclock,
+                valign = "center",
+                halign = "center",
+                layout = wibox.container.place,
+            }
         },
-        nil, -- Middle widget
-        { -- Right widgets
-            layout = wibox.layout.fixed.horizontal,
-            wibox.widget {
-                widget = wibox.widget.separator,
-                forced_width = 2,
-                opacity = 0
-            },
-
-            mpd_widget,
-
-            mytextclock,
-
-            wibox.widget {
-                widget = wibox.widget.separator,
-                forced_width = 4,
-                opacity = 0
-            },
-
-            brightness_widget{
-                type = 'icon_and_text',
-                program = 'xbacklight',
-                font = 'Fira Code Nerd Font Medium 9',
-                step = 2,        
-            },
-    
-            wibox.widget {
-                widget = wibox.widget.separator,
-                forced_width = 6,
-                opacity = 0
-            },
-    
-            volume_widget{
-                type = 'icon_and_text',
-                font = 'Fira Code Nerd Font Medium 9'
-            },
-
-            wibox.widget {
-                widget = wibox.widget.separator,
-                forced_width = 8,
-                opacity = 0
-            },
-        }
+        widget = wibox.container.margin,
+        bg = beautiful.bg_normal,
+        top = dpi(2),
+        bottom = dpi(2),
+        shape = function(cr, width, height)
+            gears.shape.rounded_rect(cr, width, height, 0)
+        end,
     }
     
     -- Create the bottom wibox
     s.mywiboxbottom = awful.wibar({ 
         position = "bottom", 
         screen = s, 
-        -- shape = custom_shape, 
-        width = 1366,
-        height = 22,
+        width = 1920,
+        height = 24,
         bg = "#323232",
         border_color = "00000000"
     })
 
     s.mywiboxbottom.x = 0
-    s.mywiboxbottom.y = 768 - s.mywiboxbottom.height
+    s.mywiboxbottom.y = 1080 - s.mywiboxbottom.height
 
-    local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
-    local netspeed_widget = require("awesome-wm-widgets.net-speed-widget.net-speed")
-    local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
-    local ram_widget = require("awesome-wm-widgets.ram-widget.ram-widget")
+    if s.index == 2 then
+        s.mywiboxbottom.x = 1920
+    end
+
+    local netspeed_widget = require("custom-widgets.net-speed")
+    local systray = require("custom-widgets.systray")
 
     -- Add widgets to the bottom wibox
     s.mywiboxbottom:setup {
@@ -484,46 +490,10 @@ awful.screen.connect_for_each_screen(function(s)
 				forced_width = 8,
 				opacity = 0
 			},
-            s.systray,
-            wibox.widget {
-				widget = wibox.widget.separator,
-				forced_width = 8,
-				opacity = 0
-			},
-
+            systray,
+            separator,
             netspeed_widget(),
-
-            battery_widget{
-                type = 'icon_and_text',
-                font = 'Fira Code Nerd Font Medium 8',
-                path_to_icons = '/usr/share/icons/Flat-Remix-Red-Dark/status/symbolic/',
-                show_current_level = true,
-                display_notification = true,
-                display_notification_onClick = true,
-                notification_position = 'bottom_right'
-            },
-
-            wibox.widget {
-				widget = wibox.widget.separator,
-				forced_width = 8,
-				opacity = 0
-			},
-            
-            ram_widget(),
-
-            wibox.widget {
-				widget = wibox.widget.separator,
-				forced_width = 8,
-				opacity = 0
-			},
-            
-            cpu_widget(),
-
-            wibox.widget {
-                widget = wibox.widget.separator,
-                forced_width = 8,
-                opacity = 0
-            },
+            separator
         },
     }
 
@@ -546,11 +516,11 @@ globalkeys = gears.table.join(
     awful.key({ modkey, }, "Left",   awful.tag.viewprev, { description = "view previous", group = "tag" }),
     awful.key({ modkey, }, "Right",  awful.tag.viewnext, { description = "view next", group = "tag" }),
     awful.key({ modkey, }, "Escape", awful.tag.history.restore, { description = "go back", group = "tag" }),
-    awful.key({ modkey, }, "<", function() awful.screen.focused().systray.visible = not awful.screen.focused().systray.visible end, { description = "toggle systray visibility", group = "custom" }),
+    -- awful.key({ modkey, }, "<", function() awful.screen.focused().systray.visible = not awful.screen.focused().systray.visible end, { description = "toggle systray visibility", group = "custom" }),
 
     -- Non-empty tag browsing
-    awful.key({ altkey }, "Left", function () lain.util.tag_view_nonempty(-1) end, { description = "view  previous nonempty", group = "tag" }),
-    awful.key({ altkey }, "Right", function () lain.util.tag_view_nonempty(1) end, { description = "view  previous nonempty", group = "tag" }),
+    awful.key({ altkey }, "Left", function () lain.util.tag_view_nonempty(-1) end, { description = "view previous nonempty", group = "tag" }),
+    awful.key({ altkey }, "Right", function () lain.util.tag_view_nonempty(1) end, { description = "view previous nonempty", group = "tag" }),
 
     -- Default client focus
     awful.key({ altkey, }, "j", function () awful.client.focus.byidx( 1) end, {description = "focus next by index", group = "client"}),
@@ -599,12 +569,14 @@ globalkeys = gears.table.join(
             end
         end,
         {description = "go back", group = "client"}),
+    awful.key({ modkey, "Shift"  }, "o", awful.client.movetoscreen,
+            {description = "move focused window between screens", group = "screen"}),
 
     -- Show/Hide Wibox
     awful.key({ modkey }, "b", function ()
         for s in screen do
             s.mywibox.visible       = not s.mywibox.visible
-            s.mybottomwibox.visible = not s.mybottomwibox.visible
+            s.mywiboxbottom.visible = not s.mywiboxbottom.visible
         end
     end),
 
@@ -653,31 +625,32 @@ globalkeys = gears.table.join(
     awful.key({ modkey, }, "z", function () awful.screen.focused().quake:toggle() end),
 
     -- ALSA volume control
+    awful.key({ }, "#123", 
+        function () 
+            awful.util.spawn("amixer -D pulse sset Master 2%+")
+            volume_osd.visible = true
+            volume_timer:again()
+        end),
     awful.key({ altkey }, "Up",
         function ()
-            os.execute(string.format("amixer set %s 1%%+", volume.channel))
-            volume.notify()
+            awful.util.spawn("amixer -D pulse sset Master 2%+")
+            volume_osd.visible = true
+            volume_timer:again()
+        end),
+    awful.key({ }, "#122", 
+        function ()
+            awful.util.spawn("amixer -D pulse sset Master 2%-")
+            volume_osd.visible = true
+            volume_timer:again()
         end),
     awful.key({ altkey }, "Down",
         function ()
-            os.execute(string.format("amixer set %s 1%%-", volume.channel))
-            volume.notify()
+            awful.util.spawn("amixer -D pulse sset Master 2%-")
+            volume_osd.visible = true
+            volume_timer:again()
         end),
-    awful.key({ altkey }, "m",
-        function ()
-            os.execute(string.format("amixer set %s toggle", volume.togglechannel or volume.channel))
-            volume.notify()
-        end),
-    awful.key({ altkey, "Control" }, "m",
-        function ()
-            os.execute(string.format("amixer set %s 100%%", volume.channel))
-            volume.notify()
-        end),
-    awful.key({ altkey, "Control" }, "0",
-        function ()
-            os.execute(string.format("amixer -q set %s 0%%", volume.channel))
-            volume.notify()
-        end),
+    awful.key({ }, "#121", function () awful.util.spawn("amixer -D pulse sset Master toggle") end),
+    awful.key({ altkey }, "m", function () awful.util.spawn("amixer -q set Master toggle") end),
 
     -- Bloquear pantalla
     awful.key({ modkey, altkey }, "l",
@@ -685,14 +658,30 @@ globalkeys = gears.table.join(
             awful.util.spawn("xscreensaver-command -lock")
         end),
 
-    -- Brillo
+    -- brightness Control
+    awful.key({ }, "#233", 
+        function () 
+            awful.util.spawn("light -A 10")
+            brightness_osd.visible = true
+			brightness_timer:again()
+        end),
     awful.key({ altkey, "Control" }, "Up",
         function ()
-            awful.util.spawn("xbacklight -set 100")
+            awful.util.spawn("light -A 10")
+            brightness_osd.visible = true
+			brightness_timer:again()
+        end),
+    awful.key({ }, "#232", 
+        function ()
+            awful.util.spawn("light -U 10")
+            brightness_osd.visible = true
+            brightness_timer:again()
         end),
     awful.key({ altkey, "Control" }, "Down",
         function ()
-            awful.util.spawn("xbacklight -dec 10")
+            awful.util.spawn("light -U 10")
+            brightness_osd.visible = true
+			brightness_timer:again()
         end),
 
     -- Copy to clipboard
@@ -701,12 +690,9 @@ globalkeys = gears.table.join(
     -- User programs
     awful.key({ modkey }, "q", function () awful.spawn(browser) end),
     awful.key({ modkey }, "e", function () awful.spawn(gui_editor) end),
-    awful.key({ modkey }, "g", function () awful.spawn(graphics) end),
 
     -- Default
-    -- Prompt
     awful.key({ modkey }, "r", function () awful.screen.focused().mypromptbox:run() end, {description = "run prompt", group = "launcher"}),
-
     awful.key({ modkey }, "x",
         function ()
             awful.prompt.run {
@@ -717,16 +703,9 @@ globalkeys = gears.table.join(
             }
         end,
         {description = "lua execute prompt", group = "awesome"}),
-    -- Menubar rofi
-    awful.key({ modkey }, "p", function()  awful.util.spawn("rofi-customized")  end, {description = "show the menubar rofi", group = "launcher"}),
-    awful.key({ modkey, "Shift" }, "s", function()  awful.util.spawn("notify-send -t 15000 \"CheatSheet\" \"$(cat ~/.cheatsheet)\" >/dev/null 2>&1")  end, {description = "show hints/help from ~/.cheatsheet", group = "launcher"})
-    --]]
-
-    --[[ dmenu
-    awful.key({ modkey }, "x", function ()
-        awful.spawn(string.format("dmenu_run -i -fn 'Tamsyn' -nb '%s' -nf '%s' -sb '%s' -sf '%s'",
-        beautiful.bg_normal, beautiful.fg_normal, beautiful.bg_focus, beautiful.fg_focus)),
-    end)
+    awful.key({ modkey }, "p", function() awful.util.spawn("rofi -modi window,drun,ssh,combi -show combi")  end, {description = "show the menubar rofi", group = "launcher"}),
+    -- awful.key({ modkey, "Shift" }, "p", function() menubar.show() end, {description = "show the menubar", group = "launcher"}),
+    awful.key({ modkey, "Shift" }, "s", function() awful.util.spawn("dunstify -t 15000 \"CheatSheet\" \"$(cat ~/.cheatsheet)\" >/dev/null 2>&1")  end, {description = "show hints/help from ~/.cheatsheet", group = "launcher"})
     --]]
 )
 

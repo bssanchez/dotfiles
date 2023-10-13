@@ -30,7 +30,8 @@ theme.bat_fg_critical     = "#232323"
 theme.bg_normal            = "#323232"
 theme.bg_focus             = "#202020"
 theme.bg_urgent            = "#D4191955"
-theme.bg_systray           = "#323232"
+theme.bg_systray           = "#121212"
+theme.bg_taglist           = "#121212"
 theme.systray_icon_spacing = 10
 theme.bat_bg_critical      = "#D4191955"
 
@@ -57,7 +58,7 @@ theme.notification_border_width = 0
 theme.notification_border_color = "#ffffff"
 theme.notification_shape        = gears.shape.rectangle
 theme.notification_opacity      = 1
-theme.notification_margin       = 30
+theme.notification_margin       = 5
 theme.notification_icon_size    = 64
 
 -- Layout
@@ -73,10 +74,18 @@ theme.layout_spiral     = theme.icons .. "/panel/layouts/spiral.png"
 
 -- Taglist
 
-theme.taglist_bg_empty    = "png:" .. theme.icons .. "/panel/taglist/" .. chosen_taglist_type .. "/empty.png"
-theme.taglist_bg_occupied = "png:" .. theme.icons .. "/panel/taglist/" .. chosen_taglist_type .. "/occupied.png"
-theme.taglist_bg_urgent   = "png:" .. theme.icons .. "/panel/taglist/" .. chosen_taglist_type .. "/urgent.png"
-theme.taglist_bg_focus    = "png:" .. theme.icons .. "/panel/taglist/" .. chosen_taglist_type .. "/focus.png"
+-- theme.taglist_bg_empty    = "png:" .. theme.icons .. "/panel/taglist/" .. chosen_taglist_type .. "/empty.png"
+-- theme.taglist_bg_occupied = "png:" .. theme.icons .. "/panel/taglist/" .. chosen_taglist_type .. "/occupied.png"
+-- theme.taglist_bg_urgent   = "png:" .. theme.icons .. "/panel/taglist/" .. chosen_taglist_type .. "/urgent.png"
+-- theme.taglist_bg_focus    = "png:" .. theme.icons .. "/panel/taglist/" .. chosen_taglist_type .. "/focus.png"
+
+theme.taglist_bg_urgent    = theme.bg_taglist
+theme.taglist_bg_focus    = theme.bg_taglist
+
+theme.taglist_fg_empty    = "#afbfbf"
+theme.taglist_fg_occupied = "#fdf6e3"
+theme.taglist_fg_focus    = "#D41919"
+theme.taglist_fg_urgent   = "#d9a400"
 theme.taglist_font        = "Font Awesome 9"
 
 -- Tasklist
