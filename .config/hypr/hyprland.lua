@@ -22,6 +22,15 @@ hl.monitor({
 	scale = "auto",
 })
 
+-- 75Hz es un modo VESA, no CEA-861: evita que el monitor interprete la
+-- senal HDMI como video de rango limitado y recorte los tonos > 235.
+hl.monitor({
+	output = "HDMI-A-1",
+	mode = "1920x1080@74.97",
+	position = "0x0",
+	scale = 1,
+})
+
 ---------------------
 ---- MY PROGRAMS ----
 ---------------------
@@ -29,7 +38,7 @@ hl.monitor({
 -- Set programs that you use
 local browser = "brave-nightly"
 local terminal = "kitty"
-local fileManager = "pcmanfm"
+local fileManager = "pcmanfm-qt"
 local menu = "killall rofi || rofi -show drun"
 
 -------------------
