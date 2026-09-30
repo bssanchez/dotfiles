@@ -1,0 +1,32 @@
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+# Plugins para antidote — PODADO según uso real (11.461 comandos).
+# El ORDEN importa: syntax-highlighting SIEMPRE al final.
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+# --- Librería de oh-my-zsh ---
+# Necesaria para el prompt: git_prompt_info, colors, opciones de history.
+ohmyzsh/ohmyzsh path:lib
+
+# --- Plugins que SÍ usas ---
+ohmyzsh/ohmyzsh path:plugins/virtualenv   # 24 activaciones de venv -> prompt
+ohmyzsh/ohmyzsh path:plugins/sudo         # ESC ESC para anteponer sudo
+ohmyzsh/ohmyzsh path:plugins/nvm          # 33 usos + lazy load + .nvmrc
+
+# --- Plugin custom tuyo ---
+/home/kid_goth/.config/zsh-antidote/plugins/pipadd
+
+# --- Experiencia interactiva estilo fish ---
+zsh-users/zsh-autosuggestions
+zsh-users/zsh-syntax-highlighting
+
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+# QUITADOS (0 uso real en tu historial):
+#   git       -> usas `git` completo (1994x); prefieres comandos portables
+#   docker    -> 0 aliases usados; Docker ya trae su propia completion
+#   archlinux -> 0 aliases; usas paru/yay/trizen directo
+#   tmux      -> 0 aliases (solo 6 usos de tmux)
+#   git-flow  -> 0-1 uso
+#   nodenv-icon -> usas nvm, no nodenv
+#   k         -> no le viste mejora sobre lsd
+# La completion de poetry se carga por fpath en .zshrc (la usas 66x).
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
