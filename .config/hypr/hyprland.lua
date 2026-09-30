@@ -298,7 +298,7 @@ hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit")) -- dwindle only
 hl.bind(mainMod .. " + M", hl.dsp.window.fullscreen({ mode = "maximized", action = "toggle" }))
-hl.bind(mainMod .. " + W", hl.dsp.exec_cmd("killall wlogout; wlogout"))
+hl.bind(mainMod .. " + W", hl.dsp.exec_cmd("~/.config/hypr/scripts/powermenu.sh"))
 
 -- Move window in the screen with mainMod + CTR + arrow keys
 hl.bind(mainMod .. " + CTRL + left", hl.dsp.window.move({ direction = "left" }))
@@ -531,7 +531,9 @@ hl.window_rule({
 
 hl.window_rule({
 	name = "workspace-2-apps",
-	match = { class = "^(Windsurf|windsurf|Kiro|Code|code|Antigravity|antigravity|Cursor|cursor)$" },
+	match = {
+		class = "^(Windsurf|windsurf|Kiro|Code|code|Antigravity|antigravity|Cursor|cursor|com.microsoft.VSCode)$",
+	},
 
 	workspace = 2,
 })

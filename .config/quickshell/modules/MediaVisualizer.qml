@@ -18,12 +18,12 @@ PanelWindow {
         bottom: true
     }
     margins {
-        right: 14
-        bottom: 8
+        right: 0
+        bottom: 0
     }
 
-    implicitWidth: 360
-    implicitHeight: 360
+    implicitWidth: 300
+    implicitHeight: 300
     color: "transparent"
     exclusionMode: ExclusionMode.Ignore
 
@@ -59,8 +59,8 @@ PanelWindow {
     // Cambia con cada canción; los colores derivados se interpolan suave.
     property real hue: Math.random()
 
-    readonly property color accent: Qt.hsla(hue, 0.62, 0.66, 1.0)
-    readonly property color accentDeep: Qt.hsla((hue + 0.09) % 1.0, 0.72, 0.44, 1.0)
+    property color accent: Qt.hsla(hue, 0.62, 0.66, 1.0)
+    property color accentDeep: Qt.hsla((hue + 0.09) % 1.0, 0.72, 0.44, 1.0)
 
     Behavior on accent {
         ColorAnimation { duration: 900; easing.type: Easing.InOutQuad }
@@ -193,11 +193,14 @@ PanelWindow {
             renderStrategy: Canvas.Cooperative
 
             property real phase: 0
+            // El loop va hasta 10*PI (no 2*PI) porque los multiplicadores de fase
+            // del wobble son pasos de 0.2: en 10*PI todos completan vueltas enteras
+            // y el reinicio del loop empalma sin costura. Misma velocidad angular.
             NumberAnimation on phase {
                 id: blobPhase
                 from: 0
-                to: Math.PI * 2
-                duration: 9000
+                to: Math.PI * 10
+                duration: 45000
                 loops: Animation.Infinite
                 running: visualizer.visible
             }
@@ -220,8 +223,8 @@ PanelWindow {
                     m.push(src[i]);
 
                 const N = Math.max(m.length, 48);
-                const baseR = 106 + visualizer.energy * 14;
-                const amp = 34;
+                const baseR = 110 + visualizer.energy * 14;
+                const amp = 50;
                 const ph = phase;
 
                 // Suavizado circular de las barras (vecinos con envolvente).
@@ -239,14 +242,21 @@ PanelWindow {
                 }
 
                 // Contorno orgánico: audio + ondulaciones lentas desfasadas.
+                // Todos los multiplicadores de ph son múltiplos de 0.2 (ver el loop
+                // de phase); si añades otro, respétalo o volverá el salto.
                 const pts = [];
                 for (let i = 0; i < N; i++) {
                     const th = i * 2 * Math.PI / N - Math.PI / 2;
                     const wobble =
-                        0.070 * Math.sin(3 * th + ph)
-                        + 0.048 * Math.sin(5 * th - ph * 1.4)
-                        + 0.030 * Math.sin(7 * th + ph * 0.6);
-                    const r = baseR * (1 + wobble) + s[i] * amp;
+                        0.130 * Math.sin(2 * th - ph * 0.4)
+                        + 0.105 * Math.sin(3 * th + ph)
+                        + 0.088 * Math.sin(5 * th - ph * 1.4)
+                        + 0.062 * Math.sin(7 * th + ph * 0.6)
+                        + 0.038 * Math.sin(11 * th - ph * 0.8);
+                    // Reparte el audio en lóbulos que giran: rompe la simetría del
+                    // espejo de barras y saca bultos en un solo lado.
+                    const lobe = 0.80 + 0.40 * Math.sin(2 * th - ph * 0.8);
+                    const r = baseR * (1 + wobble) + s[i] * amp * lobe;
                     pts.push({ x: cx + Math.cos(th) * r, y: cy + Math.sin(th) * r });
                 }
 
@@ -265,7 +275,7 @@ PanelWindow {
 
                 const a = Qt.color(visualizer.accent);
                 const d = Qt.color(visualizer.accentDeep);
-                const rMax = baseR + amp;
+                const rMax = baseR * 1.25 + amp;
 
                 blobPath();
                 const grad = ctx.createRadialGradient(
