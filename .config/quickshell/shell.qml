@@ -39,6 +39,10 @@ ShellRoot {
         }
     }
 
+    ActivateLinux {
+        targetScreen: root.primaryScreen
+    }
+
     IpcHandler {
         target: "visualizer"
 
