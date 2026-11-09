@@ -85,6 +85,8 @@ alias k3sctl="sudo k3s kubectl"
 alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
 alias anti='antigraviy'
 alias rm="rm -i"
+alias lain='CLAUDE_CONFIG_DIR="$HOME/.claude-lain" claude'
+alias navi='CLAUDE_CONFIG_DIR="$HOME/.claude-navi" claude'
 
 # zoxide + fzf (se activan solo si el binario existe)
 if command -v zoxide >/dev/null 2>&1; then
