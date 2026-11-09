@@ -50,6 +50,9 @@ zstyle ':antidote:bundle' use-friendly-names 'on'
 source $HOME/.antidote/antidote.zsh
 antidote load ${ZDOTDIR:-$HOME}/.zsh_plugins.txt
 
+# Sin beep (ej. Tab sin coincidencias)
+setopt NO_BEEP
+
 # Prompt (tema lain)
 setopt PROMPT_SUBST
 autoload -Uz colors && colors
