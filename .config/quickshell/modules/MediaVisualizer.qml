@@ -12,18 +12,22 @@ PanelWindow {
     property var targetScreen
     screen: targetScreen
 
-    // Esquina inferior derecha
+    // Arriba al centro, detrás de la barra (que vive en la capa Top).
+    // Solo anclada arriba: layer-shell la centra en horizontal. La ameba se
+    // sale por el borde superior y la pantalla la recorta.
     anchors {
-        right: true
-        bottom: true
+        top: true
     }
     margins {
-        right: 0
-        bottom: 0
+        top: 0
     }
 
-    implicitWidth: 300
-    implicitHeight: 300
+    implicitWidth: 960
+    implicitHeight: 420
+
+    // Centro de la ameba. Queda lo bastante abajo para que el disco y el
+    // título asomen por debajo de la barra (5 de margen + 36 de alto).
+    readonly property real blobCenterY: 122
     color: "transparent"
     exclusionMode: ExclusionMode.Ignore
 
@@ -210,7 +214,7 @@ PanelWindow {
                 ctx.reset();
 
                 const cx = width / 2;
-                const cy = height / 2;
+                const cy = visualizer.blobCenterY;
 
                 const src = visualizer.dispValues;
                 const n = src.length;
@@ -223,8 +227,11 @@ PanelWindow {
                     m.push(src[i]);
 
                 const N = Math.max(m.length, 48);
-                const baseR = 110 + visualizer.energy * 14;
-                const amp = 50;
+                const baseR = 140 + visualizer.energy * 16;
+                const amp = 56;
+                // Achata la ameba: más ancha que alta para que no se vea tan deforme.
+                const sx = 1.7;
+                const sy = 0.78;
                 const ph = phase;
 
                 // Suavizado circular de las barras (vecinos con envolvente).
@@ -257,7 +264,7 @@ PanelWindow {
                     // espejo de barras y saca bultos en un solo lado.
                     const lobe = 0.80 + 0.40 * Math.sin(2 * th - ph * 0.8);
                     const r = baseR * (1 + wobble) + s[i] * amp * lobe;
-                    pts.push({ x: cx + Math.cos(th) * r, y: cy + Math.sin(th) * r });
+                    pts.push({ x: cx + Math.cos(th) * r * sx, y: cy + Math.sin(th) * r * sy });
                 }
 
                 function blobPath() {
@@ -280,7 +287,7 @@ PanelWindow {
                 blobPath();
                 const grad = ctx.createRadialGradient(
                     cx, cy - rMax * 0.25, rMax * 0.08,
-                    cx, cy, rMax * 1.05);
+                    cx, cy, rMax * 1.05 * sx);
                 grad.addColorStop(0.0, Qt.rgba(a.r, a.g, a.b, 0.55));
                 grad.addColorStop(0.55, Qt.rgba(d.r, d.g, d.b, 0.38));
                 grad.addColorStop(1.0, Qt.rgba(d.r, d.g, d.b, 0.10));
@@ -296,8 +303,8 @@ PanelWindow {
 
         // ---------- Now playing — vinilo dentro de la ameba ----------
         Column {
-            anchors.centerIn: parent
-            anchors.verticalCenterOffset: -6
+            anchors.horizontalCenter: parent.horizontalCenter
+            y: visualizer.blobCenterY - height / 2
             spacing: 6
             visible: visualizer.activePlayer !== null
 
