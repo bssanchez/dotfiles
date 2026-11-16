@@ -50,6 +50,20 @@ CONFIGS=(
   # Fondo de pantalla aleatorio cada 10 min
   .config/systemd/user/wallpaper.service
   .config/systemd/user/wallpaper.timer
+
+  # Skills de agentes (instaladas con `npx skills add <repo> -g -a universal`).
+  # Para actualizarlas: `npx skills update -g` y commit.
+  .agents/skills
+  .agents/.skill-lock.json
+)
+
+# Perfiles de Claude Code (ver alias lain/navi en .zshrc). Cada skill de
+# .agents/skills se enlaza en <perfil>/skills/<skill>. Se enlaza skill por skill
+# y no la carpeta entera porque <perfil>/skills/synced lo gestiona claude.ai.
+CLAUDE_PROFILES=(
+  .claude
+  .claude-lain
+  .claude-navi
 )
 
 # Scripts propios de .local/bin (el resto de esa carpeta son binarios generados por pip)
@@ -128,6 +142,25 @@ done
 
 for pair in "${EXTRA_LINKS[@]}"; do
   link "$DOTFILES/${pair#*:}" "$HOME/${pair%%:*}"
+done
+
+for profile in "${CLAUDE_PROFILES[@]}"; do
+  skills_dir="$HOME/$profile/skills"
+
+  # Symlinks rotos de skills que ya no existen (p. ej. borradas del repo)
+  if [[ -d "$skills_dir" ]]; then
+    for entry in "$skills_dir"/*; do
+      if [[ -L "$entry" && ! -e "$entry" ]]; then
+        echo "${c_warn}−${c_off} ${entry/#$HOME/\~}  (symlink roto, se elimina)"
+        run rm "$entry"
+      fi
+    done
+  fi
+
+  for skill in "$DOTFILES"/.agents/skills/*/; do
+    skill="$(basename "$skill")"
+    link "$DOTFILES/.agents/skills/$skill" "$skills_dir/$skill"
+  done
 done
 
 # Carpeta de fondos que usa set-random-wallpaper.sh. Solo se crea si no existe,
