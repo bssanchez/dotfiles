@@ -524,7 +524,7 @@ hl.window_rule({
 
 hl.window_rule({
 	name = "workspace-1-apps",
-	match = { class = "^(pcmanfm)$" },
+	match = { class = "^(pcmanfm|pcmanfm-qt)$" },
 
 	workspace = 1,
 })
